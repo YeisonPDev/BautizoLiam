@@ -1,0 +1,54 @@
+INVITACIÓN · BAUTIZO DE LIAM ANDRÉS
+====================================
+
+Para verla: abre index.html con doble clic.
+
+
+QUÉ HAY EN CADA CARPETA
+-----------------------
+index.html          Los textos y el orden de la invitación.
+css/estilos.css     El diseño: colores, tamaños, letras, animaciones.
+js/invitacion.js    Lo que "se mueve": nombre del invitado, cuenta
+                    regresiva, mapa y lista de invitados.
+img/                Las imágenes (foto, flores, brillo, cruz).
+respaldo/           Copia de la versión anterior (todo en un solo archivo).
+                    Puedes borrarla cuando ya no la necesites.
+
+Las carpetas deben ir siempre juntas. Si publicas o mueves la invitación,
+lleva index.html con css/, js/ e img/.
+
+
+QUIERO CAMBIAR...
+-----------------
+Un texto (nombres, frases, lugar)
+    index.html. Cada parte tiene un título en mayúsculas:
+    PORTADA, TARJETA 1, TARJETA 2, TARJETA 3, LISTA DE INVITADOS.
+
+La fecha o la hora
+    En dos sitios:
+    1. index.html, en "TARJETA 3 · FECHA Y LUGAR" (lo que se lee).
+       También en la PORTADA y al principio del archivo (texto al compartir).
+    2. js/invitacion.js, en "DATOS QUE PUEDES CAMBIAR" (la cuenta regresiva).
+
+Los lugares del mapa o sus enlaces
+    js/invitacion.js, en "DATOS QUE PUEDES CAMBIAR" -> lugares.
+
+El mensaje de WhatsApp o los invitados iniciales
+    js/invitacion.js, en "DATOS QUE PUEDES CAMBIAR".
+
+La foto
+    Reemplaza img/foto-liam.webp por otra con el mismo nombre.
+
+Un color o un tipo de letra
+    css/estilos.css, al principio, en "COLORES Y TIPOS DE LETRA".
+
+
+CÓMO SE ENVÍA A CADA INVITADO
+-----------------------------
+1. Publica la carpeta completa en internet.
+2. Abre la página sin nombre en el enlace: al final aparece
+   "Lista de invitados" (solo la ves tú).
+3. Agrega a cada persona y toca "Copiar enlace" o "Enviar por WhatsApp".
+   Cada invitado abre la invitación con su nombre y no ve la lista.
+
+La lista se guarda en el navegador donde la escribiste, no en internet.

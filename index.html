@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <!-- Texto que aparece al compartir el enlace (WhatsApp, Google, etc.) -->
+  <title>Bautizo de Liam Andrés</title>
+  <meta name="description" content="Invitación al bautizo de Liam Andrés · Domingo 1 de noviembre, 10:00 a.m.">
+  <meta property="og:title" content="Bautizo de Liam Andrés">
+  <meta property="og:description" content="Domingo 1 de noviembre · 10:00 a.m. · Parroquia Santa Bernardita (Acapulco)">
+
+  <!-- Tipos de letra -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400;500&display=swap">
+
+  <!-- Diseño: colores, tamaños y animaciones -->
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<!-- ==========================================================
+     DIBUJOS REUTILIZABLES (no se ven aquí; se usan más abajo
+     con <use href="#nombre">). Así cada dibujo se escribe una sola vez.
+     ========================================================== -->
+<svg class="sprite" aria-hidden="true">
+  <defs>
+    <linearGradient id="oro-cruz" x1="0" x2="1">
+      <stop offset="0" stop-color="#a8743f"/>
+      <stop offset=".45" stop-color="#f1d3a6"/>
+      <stop offset=".6" stop-color="#c99a62"/>
+      <stop offset="1" stop-color="#9c6a38"/>
+    </linearGradient>
+    <linearGradient id="cobre-cinta" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b47a50"/>
+      <stop offset=".22" stop-color="#d9ad86"/>
+      <stop offset=".5" stop-color="#b98058"/>
+      <stop offset=".78" stop-color="#dcb08a"/>
+      <stop offset="1" stop-color="#a96f47"/>
+    </linearGradient>
+    <linearGradient id="cobre-cinta-puntas" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9a6440"/>
+      <stop offset="1" stop-color="#c0875d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Cruz dorada -->
+  <symbol id="dibujo-cruz" viewBox="0 0 40 64">
+    <path fill="url(#oro-cruz)" d="M17 0h6v16h15v6H23v42h-6V22H2v-6h15z"/>
+    <path fill="none" stroke="#fff3df" stroke-width=".8" opacity=".7" d="M19 2v16H4M21 2v16h15M19 20v42M21 20v42M4 20h15M21 20h15"/>
+  </symbol>
+
+  <!-- Estrella de cuatro puntas -->
+  <symbol id="dibujo-estrella" viewBox="0 0 20 20">
+    <path fill="currentColor" d="M10 0c.6 5.6 4.4 9.4 10 10-5.6.6-9.4 4.4-10 10-.6-5.6-4.4-9.4-10-10 5.6-.6 9.4-4.4 10-10z"/>
+  </symbol>
+
+  <!-- Cinta de cobre (el texto va encima, en un <span>) -->
+  <symbol id="dibujo-cinta" viewBox="0 0 330 62" overflow="visible">
+    <path fill="url(#cobre-cinta-puntas)" d="M2 22h46v34H2l12-17z"/>
+    <path fill="url(#cobre-cinta-puntas)" d="M328 22h-46v34h46l-12-17z"/>
+    <path fill="#7d4f2f" d="M36 48h14v8zM294 48h-14v8z"/>
+    <path fill="url(#cobre-cinta)" d="M36 8Q165 -2 294 8v40Q165 38 36 48z"/>
+    <path fill="none" stroke="#f6dcc0" stroke-width=".8" opacity=".55" d="M40 12Q165 3 290 12M40 44Q165 35 290 44"/>
+  </symbol>
+</svg>
+
+
+<!-- ==========================================================
+     PORTADA
+     Lo primero que ve el invitado. Se quita al tocar «Abrir invitación».
+     ========================================================== -->
+<div class="cover" id="cover" role="dialog" aria-label="Invitación">
+  <div class="card">
+    <div class="glitter tr"></div><div class="glitter bl"></div>
+    <img class="flor tl" src="img/flores-arriba.webp" alt="">
+    <img class="flor br" src="img/flores-abajo.webp" alt="">
+
+    <div class="content">
+      <svg class="cross cross-svg" viewBox="0 0 40 64" aria-hidden="true"><use href="#dibujo-cruz"/></svg>
+      <p class="small">Invitación especial para</p>
+      <!-- El nombre lo pone js/invitacion.js según el enlace de cada invitado -->
+      <p class="who" id="coverName">Madrina Valentina</p>
+      <div class="script">Bautizo</div>
+      <p class="small cover-date">Liam Andrés · 01 de noviembre</p>
+      <button class="btn open" id="openBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="1.5"/></svg>
+        Abrir invitación
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<main class="stack">
+
+  <!-- ==========================================================
+       TARJETA 1 · BAUTIZO (foto y nombre)
+       ========================================================== -->
+  <section class="card reveal" id="inicio" aria-label="Bautizo de Liam Andrés">
+    <div class="glitter tr"></div><div class="glitter bl"></div>
+    <img class="flor tl" src="img/flores-arriba.webp" alt="">
+    <img class="flor br" src="img/flores-abajo.webp" alt="">
+
+    <div class="content">
+      <div class="stars" aria-hidden="true">
+        <span class="star s1"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+        <span class="star s2"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+        <span class="star s3"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+        <span class="star s4"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+        <span class="star s5"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+        <span class="star s6"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+      </div>
+
+      <svg class="cross cross-svg" viewBox="0 0 40 64" aria-hidden="true"><use href="#dibujo-cruz"/></svg>
+
+      <!-- Foto principal: para cambiarla, reemplaza el archivo img/foto-liam.webp -->
+      <img class="hero" src="img/foto-liam.webp" alt="Liam Andrés sonriendo, rodeado de una corona de hojas y un osito de peluche">
+
+      <p class="lead">Acompáñanos a celebrar el sagrado sacramento del</p>
+
+      <div class="script-row">
+        <span class="star inline big" aria-hidden="true"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+        <h1 class="script">Bautizo</h1>
+        <span class="star inline big delay-2" aria-hidden="true"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+      </div>
+
+      <div class="ribbon">
+        <svg viewBox="0 0 330 62" aria-hidden="true"><use href="#dibujo-cinta"/></svg>
+        <span>Liam Andrés</span>
+      </div>
+
+      <span class="star inline delay-1" aria-hidden="true"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+    </div>
+  </section>
+
+
+  <!-- ==========================================================
+       TARJETA 2 · PADRES Y PADRINOS
+       ========================================================== -->
+  <section class="card reveal" id="familia" aria-label="Padres y padrinos">
+    <div class="glitter tr"></div><div class="glitter bl"></div>
+    <img class="flor tl" src="img/flores-arriba.webp" alt="">
+    <img class="flor br" src="img/flores-abajo.webp" alt="">
+
+    <div class="content">
+      <img class="cross-wreath" src="img/cruz-con-corona.webp" alt="">
+
+      <p class="verse">Dios nos ha concedido el hermoso regalo de ser sus padres</p>
+
+      <div class="ribbon caps">
+        <svg viewBox="0 0 330 62" aria-hidden="true"><use href="#dibujo-cinta"/></svg>
+        <span>Los Padres</span>
+      </div>
+      <p class="names">Andres Villamizar<br>Paola Carrillo</p>
+
+      <p class="verse spaced">Como testigos de este sacramento, hemos elegido a personas muy especiales</p>
+
+      <div class="ribbon caps">
+        <svg viewBox="0 0 330 62" aria-hidden="true"><use href="#dibujo-cinta"/></svg>
+        <span>Los Padrinos</span>
+      </div>
+      <p class="names">Jhonatan Carrillo<br>Valentina Pedroza</p>
+
+      <span class="star inline" aria-hidden="true"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+    </div>
+  </section>
+
+
+  <!-- ==========================================================
+       TARJETA 3 · FECHA Y LUGAR
+       Si cambias la fecha aquí, cámbiala también en js/invitacion.js
+       (la cuenta regresiva la toma de allí).
+       ========================================================== -->
+  <section class="card reveal" id="evento" aria-label="Fecha y lugar">
+    <div class="glitter tr"></div><div class="glitter bl"></div>
+    <img class="flor tl" src="img/flores-arriba.webp" alt="">
+    <img class="flor br" src="img/flores-abajo.webp" alt="">
+
+    <div class="content">
+      <img class="cross-wreath" src="img/cruz-con-corona.webp" alt="">
+
+      <p class="verse">Tu presencia será un regalo invaluable para nosotros en este día lleno de bendiciones</p>
+
+      <!-- Fecha -->
+      <div class="date" aria-label="Domingo 1 de noviembre, 10:00 a.m.">
+        <span class="side">Domingo</span>
+        <div class="seal">
+          <svg class="arc" viewBox="0 0 120 70" aria-hidden="true">
+            <path id="arcp" d="M18 52 A44 44 0 0 1 102 52" fill="none"/>
+            <text text-anchor="middle"><textPath href="#arcp" startOffset="50%">NOVIEMBRE</textPath></text>
+          </svg>
+          <div class="coin"><b>01</b></div>
+        </div>
+        <span class="side">10:00 A.M.</span>
+      </div>
+
+      <!-- Cuenta regresiva (los números los pone js/invitacion.js) -->
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div><b id="cd-d">--</b><small>Días</small></div>
+        <div><b id="cd-h">--</b><small>Horas</small></div>
+        <div><b id="cd-m">--</b><small>Min</small></div>
+        <div><b id="cd-s">--</b><small>Seg</small></div>
+      </div>
+
+      <svg class="church" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M16 3v5M14 5h4"/><path d="M5 16 16 8l11 8"/><path d="M8 14v14h16V14"/><path d="M13.5 28v-6a2.5 2.5 0 0 1 5 0v6"/></svg>
+
+      <!-- Lugares -->
+      <p class="place">La misa será en la <strong>Parroquia Santa Bernardita (Acapulco)</strong> a las 10:00 a.m.</p>
+      <p class="place">La recepción será en la <strong>vereda La Esperanza</strong> (la parada de Pablo)</p>
+
+      <!-- Mapa: los nombres y enlaces de cada lugar están en js/invitacion.js -->
+      <div class="map" id="map">
+        <div class="map-tabs" role="tablist" aria-label="Lugares">
+          <button class="map-tab" type="button" role="tab" id="tab-misa" data-place="misa" aria-selected="true">1 · Misa</button>
+          <button class="map-tab" type="button" role="tab" id="tab-rec" data-place="rec" aria-selected="false">2 · Recepción</button>
+        </div>
+
+        <svg class="map-svg" viewBox="0 0 340 230" role="img" aria-label="Mapa de la parroquia y de la recepción">
+          <defs>
+            <pattern id="mgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#e9e2d4" stroke-width=".6"/></pattern>
+            <linearGradient id="pinG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9a77d"/><stop offset="1" stop-color="#a96f47"/></linearGradient>
+          </defs>
+          <rect width="340" height="230" fill="#f6f1e7"/>
+          <rect width="340" height="230" fill="url(#mgrid)"/>
+          <!-- zonas verdes -->
+          <path d="M-5 150c40-14 70 8 110-4s60-40 100-30 60 34 140 20v100H-5z" fill="#dfe7df"/>
+          <path d="M210 -5c10 30 40 44 80 40s40 10 55 0V-5z" fill="#e3eae2"/>
+          <ellipse cx="62" cy="58" rx="46" ry="28" fill="#e3eae2"/>
+          <!-- quebrada -->
+          <path d="M-5 120c30 6 50-12 80-6s50 30 90 26 70-36 120-30 50 18 60 14" fill="none" stroke="#cfdde0" stroke-width="7" stroke-linecap="round"/>
+          <!-- vías -->
+          <g fill="none" stroke="#fffdf8" stroke-linecap="round">
+            <path d="M-5 92C60 86 110 70 170 74s120 30 175 22" stroke-width="10"/>
+            <path d="M118 -5c4 40 0 70 12 100s40 70 44 140" stroke-width="8"/>
+            <path d="M250 -5c-6 50-20 80-10 120s30 60 34 120" stroke-width="6"/>
+          </g>
+          <g fill="none" stroke="#e4d6bf" stroke-linecap="round">
+            <path d="M-5 92C60 86 110 70 170 74s120 30 175 22" stroke-width="1"/>
+            <path d="M118 -5c4 40 0 70 12 100s40 70 44 140" stroke-width="1"/>
+          </g>
+          <!-- ruta -->
+          <path id="route" d="M128 74c20 2 40 6 62 14s50 30 64 62" fill="none" stroke="#a96f47" stroke-width="2.2" stroke-dasharray="5 6" stroke-linecap="round"/>
+          <!-- arbolitos -->
+          <g fill="#9fb5a7"><circle cx="40" cy="170" r="6"/><circle cx="52" cy="176" r="5"/><circle cx="300" cy="190" r="6"/><circle cx="312" cy="184" r="5"/><circle cx="70" cy="50" r="5"/><circle cx="82" cy="60" r="6"/><circle cx="290" cy="30" r="5"/></g>
+          <!-- pin de la misa -->
+          <g class="pin" id="pin-misa" data-place="misa" transform="translate(128 74)" tabindex="0" role="button" aria-label="Ver la parroquia">
+            <ellipse cx="0" cy="2" rx="8" ry="3" fill="rgba(80,50,20,.18)"/>
+            <g class="pin-body">
+              <path d="M0 0c-10-12-14-18-14-25a14 14 0 0 1 28 0c0 7-4 13-14 25z" fill="url(#pinG)" stroke="#fff" stroke-width="1.5"/>
+              <path d="M0-33v12M-4-29h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+            </g>
+          </g>
+          <!-- pin de la recepción -->
+          <g class="pin" id="pin-rec" data-place="rec" transform="translate(254 150)" tabindex="0" role="button" aria-label="Ver la recepción">
+            <ellipse cx="0" cy="2" rx="8" ry="3" fill="rgba(80,50,20,.18)"/>
+            <g class="pin-body">
+              <path d="M0 0c-10-12-14-18-14-25a14 14 0 0 1 28 0c0 7-4 13-14 25z" fill="#7f9a8b" stroke="#fff" stroke-width="1.5"/>
+              <path d="M-5-23l5-6 5 6M-3.5-24v5h7v-5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+            </g>
+          </g>
+          <!-- nombres sobre el mapa -->
+          <g font-family="Poppins, sans-serif" font-size="9.5" fill="#5f5b56">
+            <text x="128" y="96" text-anchor="middle">Parroquia Santa Bernardita</text>
+            <text x="254" y="170" text-anchor="middle">La Parada de Pablo</text>
+          </g>
+          <!-- norte -->
+          <g transform="translate(316 24)" fill="#a96f47" font-family="Poppins, sans-serif" font-size="9"><path d="M0-12l4 10h-8z"/><text y="9" text-anchor="middle">N</text></g>
+        </svg>
+
+        <div class="map-info" id="mapInfo" aria-live="polite">
+          <p class="map-title" id="mapTitle">Parroquia Santa Bernardita</p>
+          <p class="map-sub" id="mapSub">Acapulco · Misa a las 10:00 a.m.</p>
+          <div class="actions">
+            <a class="btn" id="gmaps" target="_blank" rel="noopener" href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+              Google Maps
+            </a>
+            <a class="btn ghost" id="waze" target="_blank" rel="noopener" href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8z"/></svg>
+              Waze
+            </a>
+          </div>
+        </div>
+        <p class="map-note">Mapa de referencia. Toca un pin y abre Google Maps o Waze para ver la ruta exacta.</p>
+      </div>
+
+      <span class="btn for" id="forTag">Para: Madrina Valentina</span>
+      <span class="star inline" aria-hidden="true"><svg viewBox="0 0 20 20"><use href="#dibujo-estrella"/></svg></span>
+    </div>
+  </section>
+
+
+  <!-- ==========================================================
+       LISTA DE INVITADOS
+       Solo la ve quien organiza: aparece cuando la página se abre
+       sin nombre en el enlace. Los invitados nunca la ven.
+       ========================================================== -->
+  <section class="host" id="host" aria-labelledby="hostTitle" hidden>
+    <div class="host-head">
+      <p class="eyebrow">Solo para ti</p>
+      <h2 id="hostTitle">Lista de invitados</h2>
+      <p class="host-help">Agrega a cada invitado y envíale su propio enlace. Al abrirlo, la invitación sale con su nombre y esta lista no aparece.</p>
+    </div>
+
+    <form class="host-add" id="addForm" autocomplete="off">
+      <label class="sr" for="guestInput">Nombre del invitado</label>
+      <input id="guestInput" type="text" maxlength="40" placeholder="Ej.: Tía Marta y familia">
+      <button class="btn" type="submit">Agregar</button>
+    </form>
+
+    <!-- js/invitacion.js llena esta lista -->
+    <ul class="guests" id="guestList"></ul>
+    <p class="host-empty" id="guestEmpty" hidden>Todavía no hay invitados. Escribe un nombre arriba y toca «Agregar».</p>
+
+    <div class="linkbox" id="linkBox" hidden>
+      <label for="linkOut">Enlace (cópialo manualmente)</label>
+      <input id="linkOut" type="text" readonly>
+    </div>
+    <p class="host-help small-print">Los enlaces funcionan cuando la página está publicada en internet.</p>
+  </section>
+
+</main>
+
+
+<!-- Aviso flotante («Enlace copiado», etc.) -->
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<!-- Menú fijo de abajo: cada botón lleva a una sección -->
+<nav class="dots" aria-label="Secciones">
+  <button class="dot" type="button" data-target="inicio" aria-current="true">Bautizo</button>
+  <button class="dot" type="button" data-target="familia">Familia</button>
+  <button class="dot" type="button" data-target="evento">Lugar</button>
+  <button class="dot" type="button" data-target="host">Invitados</button>
+</nav>
+
+<!-- Funcionamiento: nombres, cuenta regresiva, mapa y lista de invitados -->
+<script src="js/invitacion.js"></script>
+
+</body>
+</html>
