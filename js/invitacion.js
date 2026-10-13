@@ -32,23 +32,45 @@
     // Mensaje de WhatsApp. {nombre} y {enlace} se reemplazan solos.
     mensajeWhatsApp: "¡Hola, {nombre}! Te invitamos al bautizo de Liam 🤍 Mira tu invitación aquí: {enlace}",
 
+    // Invitación general: la que se envía sin el nombre de nadie.
+    general: {
+      nombreEnLista: "Invitación general",
+      explicacion: "Sin nombre: sirve para grupos o para cualquier persona.",
+      textoPortada: "Con mucho cariño te invitamos al",
+      mensajeWhatsApp: "¡Hola! Te invitamos al bautizo de Liam 🤍 Mira la invitación aquí: {enlace}"
+    },
+
     // Lugares del mapa.
     //   titulo y detalle: lo que se lee debajo del mapa.
-    //   buscar: lo que se busca en Google Maps y Waze.
-    //   enlace: (opcional) enlace exacto de Google Maps; si está, se usa en vez de buscar.
+    //   buscar: el lugar tal como aparece en Google Maps. Es lo que muestra
+    //           el mapa de la página, así que escríbelo completo
+    //           (nombre, barrio o vereda, municipio, departamento).
+    //   coordenadas: (opcional) latitud y longitud, para que Waze llegue al punto exacto.
+    //   enlace: (opcional) enlace de Google Maps para el botón; si no está, se usa "buscar".
     lugares: {
       misa: {
         titulo: "Parroquia Santa Bernardita",
         detalle: "Acapulco · Misa a las 10:00 a.m.",
-        buscar: "Parroquia Santa Bernardita Acapulco"
+        buscar: "Iglesia Santa Bernardita, Acapulco, Girón, Santander",
+        coordenadas: "7.0120318,-73.1346552"
       },
       rec: {
         titulo: "La Parada de Pablo",
         detalle: "Recepción · Vereda La Esperanza, Girón",
         buscar: "La Parada De Pablo, Girón, Santander",
+        coordenadas: "7.0138,-73.1145183",
         enlace: "https://maps.app.goo.gl/2enFKkNUVdR1bG3FA"
       }
-    }
+    },
+
+    // Qué tan cerca se ve el mapa al abrirlo (más alto = más cerca; 15 a 17 va bien).
+    zoomMapa: 17,
+
+    // Cómo se ve el mapa al abrirlo:
+    //   "h" = satélite con nombres de calles y lugares
+    //   "k" = satélite sin nombres
+    //   "m" = mapa normal (dibujado)
+    tipoMapa: "h"
   };
 
 
@@ -74,7 +96,17 @@
      El nombre viaja al final del enlace, después del "#".
      Ej.: .../index.html#Tia-Marta  ->  "Tia Marta"
      (solo letras, números y - . ~ viajan en el enlace)
+
+     La invitación general no lleva nombre: su enlace termina en
+     "#invitacion_general". Ningún nombre puede dar ese mismo
+     enlace, porque el "_" de un nombre viaja escrito de otra forma.
      ========================================================== */
+  var GENERAL = "\u0000general";            // marca interna de "sin nombre"
+  var HASH_GENERAL = "invitacion_general";  // lo que va después del "#"
+  function isGeneral(n){ return n === GENERAL; }
+  // Cómo se nombra al invitado en los avisos y en la lista
+  function label(n){ return isGeneral(n) ? DATOS.general.nombreEnLista : n; }
+
   function encodeName(n){
     var out = "";
     for (var ch of n.trim()){
@@ -87,23 +119,35 @@
   function decodeName(s){
     return s.replace(/-/g," ").replace(/~([0-9a-f]+)\./gi, function(_, h){ return String.fromCodePoint(parseInt(h,16)); }).replace(/\s+/g," ").trim();
   }
-  function linkFor(n){ return BASE + "#" + encodeName(n); }
+  function linkFor(n){ return BASE + "#" + (isGeneral(n) ? HASH_GENERAL : encodeName(n)); }
 
-  // Si el enlace trae nombre, es un invitado. Si no, es quien organiza.
+  // Si el enlace trae algo después del "#", es un invitado. Si no, es quien organiza.
   var hashGuest = "";
-  try{ var h = (location.hash||"").slice(1); if (h) hashGuest = decodeName(decodeURIComponent(h)).slice(0,40); }catch(e){}
+  try{
+    var h = decodeURIComponent((location.hash||"").slice(1));
+    if (h === HASH_GENERAL) hashGuest = GENERAL;
+    else if (h) hashGuest = decodeName(h).slice(0,40);
+  }catch(e){}
   var isHost = !hashGuest;
 
   var guests;
   try{ guests = JSON.parse(store(KEY_LIST)||"null"); }catch(e){ guests = null; }
   if (!Array.isArray(guests)) guests = DATOS.invitadosIniciales.slice();
-  var current = hashGuest || store(KEY_SEL) || guests[0] || "ti";
+  var current = hashGuest || store(KEY_SEL) || guests[0] || GENERAL;
 
-  // Escribe el nombre en la portada y en la etiqueta «Para: ...»
+  // Escribe el nombre en la portada y en la etiqueta «Para: ...».
+  // En la invitación general se ocultan ambos y cambia la frase de la portada.
+  var leadConNombre = $("coverLead").textContent;
   function applyName(n){
     current = n;
-    $("coverName").textContent = n;
-    $("forTag").textContent = "Para: " + n;
+    var general = isGeneral(n);
+    $("coverLead").textContent = general ? DATOS.general.textoPortada : leadConNombre;
+    $("coverWho").hidden = general;
+    $("forTag").hidden = general;
+    if (!general){
+      $("coverName").textContent = n;
+      $("forTag").textContent = "Para: " + n;
+    }
     renderGuests();
   }
 
@@ -118,6 +162,12 @@
   $("openBtn").addEventListener("click", function(){
     cover.classList.add("gone"); document.body.style.overflow = "";
     try{ sessionStorage.setItem("bautizo-open","1"); }catch(e){}
+    // La primera tarjeta entra en cascada justo al abrir
+    var first = $("inicio");
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches){
+      first.classList.add("pre");
+      setTimeout(function(){ first.classList.remove("pre"); }, 60);
+    }
   });
 
 
@@ -138,21 +188,22 @@
 
   /* ==========================================================
      6. MAPA
-     Al tocar una pestaña o un pin se muestra ese lugar
-     y se actualizan los botones de Google Maps y Waze.
+     Es un mapa real de Google dentro de la página. Al tocar una
+     pestaña cambia de lugar y se actualizan los botones de
+     Google Maps y Waze.
      ========================================================== */
   function showPlace(k){
-    var p = DATOS.lugares[k];
+    var p = DATOS.lugares[k], q = encodeURIComponent(p.buscar);
     $("mapTitle").textContent = p.titulo;
     $("mapSub").textContent = p.detalle;
-    $("gmaps").href = p.enlace || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p.buscar));
-    $("waze").href = "https://waze.com/ul?q=" + encodeURIComponent(p.buscar) + "&navigate=yes";
+    $("mapFrame").src = "https://www.google.com/maps?q=" + q + "&z=" + DATOS.zoomMapa + "&t=" + DATOS.tipoMapa + "&hl=es&output=embed";
+    $("mapFrame").title = "Mapa de Google: " + p.titulo;
+    $("gmaps").href = p.enlace || ("https://www.google.com/maps/search/?api=1&query=" + q);
+    $("waze").href = "https://waze.com/ul?" + (p.coordenadas ? "ll=" + encodeURIComponent(p.coordenadas) : "q=" + q) + "&navigate=yes";
     document.querySelectorAll(".map-tab").forEach(function(t){ t.setAttribute("aria-selected", t.dataset.place===k ? "true":"false"); });
-    document.querySelectorAll(".pin").forEach(function(g){ g.classList.toggle("active", g.dataset.place===k); });
   }
-  document.querySelectorAll(".map-tab,.pin").forEach(function(el){
+  document.querySelectorAll(".map-tab").forEach(function(el){
     el.addEventListener("click", function(){ showPlace(el.dataset.place); });
-    el.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); showPlace(el.dataset.place); } });
   });
   showPlace("misa");
 
@@ -164,7 +215,8 @@
   function save(){ store(KEY_LIST, JSON.stringify(guests)); }
 
   function waText(n){
-    return DATOS.mensajeWhatsApp.split("{nombre}").join(n).split("{enlace}").join(linkFor(n));
+    var msg = isGeneral(n) ? DATOS.general.mensajeWhatsApp : DATOS.mensajeWhatsApp;
+    return msg.split("{nombre}").join(n).split("{enlace}").join(linkFor(n));
   }
 
   // Copia el enlace; si el navegador no deja, lo muestra para copiarlo a mano
@@ -172,41 +224,61 @@
     var url = linkFor(n), box = $("linkBox"), out = $("linkOut");
     function fallback(){ box.hidden=false; out.value=url; out.focus(); out.select(); toast("Selecciona el enlace y cópialo"); }
     try{
-      navigator.clipboard.writeText(url).then(function(){ box.hidden=true; toast("Enlace de " + n + " copiado"); }, fallback);
+      navigator.clipboard.writeText(url).then(function(){ box.hidden=true; toast(isGeneral(n) ? "Enlace de la invitación general copiado" : "Enlace de " + n + " copiado"); }, fallback);
     }catch(e){ fallback(); }
   }
 
-  // Dibuja la lista: cada invitado con sus cuatro botones
+  // Crea un botón pequeño de la lista
+  function chip(text, cls, onClick){
+    var b = document.createElement("button"); b.type="button"; b.className="chip" + (cls ? " " + cls : ""); b.textContent=text;
+    b.addEventListener("click", onClick);
+    return b;
+  }
+
+  // Crea la fila de un invitado (o de la invitación general) con sus botones
+  function guestRow(n, i){
+    var general = isGeneral(n);
+    var li = document.createElement("li"); li.className = "guest" + (general ? " general" : "") + (n===current ? " on" : "");
+    var name = document.createElement("span"); name.className="guest-name"; name.textContent = label(n);
+    var tag = document.createElement("span"); tag.className="eyebrow"; tag.textContent = n===current ? "Viendo" : "";
+    var tools = document.createElement("div"); tools.className="guest-tools";
+
+    var see = chip("Ver invitación", "", function(){
+      applyName(n); store(KEY_SEL, n); window.scrollTo({top:0,behavior:"smooth"});
+      toast(general ? "Mostrando la invitación general" : "Mostrando la invitación de " + n);
+    });
+    var cp = chip("Copiar enlace", "", function(){ copy(n); });
+
+    var wa = document.createElement("a"); wa.className="chip wa"; wa.target="_blank"; wa.rel="noopener"; wa.textContent="Enviar por WhatsApp";
+    wa.href = "https://wa.me/?text=" + encodeURIComponent(waText(n));
+
+    tools.append(see, cp, wa);
+    li.append(name, tag);
+
+    if (general){
+      var note = document.createElement("span"); note.className="guest-note"; note.textContent = DATOS.general.explicacion;
+      li.append(note);
+    } else {
+      var del = chip("Quitar", "del", function(){
+        guests.splice(i,1); save();
+        if (current===n) applyName(guests[0] || GENERAL); else renderGuests();
+        toast(n + " se quitó de la lista");
+      });
+      del.setAttribute("aria-label", "Quitar a " + n);
+      tools.append(del);
+    }
+
+    li.append(tools);
+    return li;
+  }
+
+  // Dibuja la lista: primero la invitación general y luego cada invitado
   function renderGuests(){
     if (!isHost) return;
     var ul = $("guestList"); ul.textContent = "";
     $("guestEmpty").hidden = guests.length > 0;
-    guests.forEach(function(n, i){
-      var li = document.createElement("li"); li.className = "guest" + (n===current ? " on" : "");
-      var name = document.createElement("span"); name.className="guest-name"; name.textContent = n;
-      var tag = document.createElement("span"); tag.className="eyebrow"; tag.textContent = n===current ? "Viendo" : "";
-      var tools = document.createElement("div"); tools.className="guest-tools";
-
-      var see = document.createElement("button"); see.type="button"; see.className="chip"; see.textContent="Ver invitación";
-      see.addEventListener("click", function(){ applyName(n); store(KEY_SEL, n); window.scrollTo({top:0,behavior:"smooth"}); toast("Mostrando la invitación de " + n); });
-
-      var cp = document.createElement("button"); cp.type="button"; cp.className="chip"; cp.textContent="Copiar enlace";
-      cp.addEventListener("click", function(){ copy(n); });
-
-      var wa = document.createElement("a"); wa.className="chip wa"; wa.target="_blank"; wa.rel="noopener"; wa.textContent="Enviar por WhatsApp";
-      wa.href = "https://wa.me/?text=" + encodeURIComponent(waText(n));
-
-      var del = document.createElement("button"); del.type="button"; del.className="chip del"; del.textContent="Quitar";
-      del.setAttribute("aria-label", "Quitar a " + n);
-      del.addEventListener("click", function(){
-        guests.splice(i,1); save();
-        if (current===n) applyName(guests[0] || "ti"); else renderGuests();
-        toast(n + " se quitó de la lista");
-      });
-
-      tools.append(see, cp, wa, del);
-      li.append(name, tag, tools); ul.append(li);
-    });
+    ul.append(guestRow(GENERAL));
+    guests.forEach(function(n, i){ ul.append(guestRow(n, i)); });
   }
 
   if (isHost){

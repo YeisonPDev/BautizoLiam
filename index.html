@@ -79,9 +79,14 @@
 
     <div class="content">
       <svg class="cross cross-svg" viewBox="0 0 40 64" aria-hidden="true"><use href="#dibujo-cruz"/></svg>
-      <p class="small">Invitación especial para</p>
-      <!-- El nombre lo pone js/invitacion.js según el enlace de cada invitado -->
-      <p class="who" id="coverName">Madrina Valentina</p>
+      <p class="small" id="coverLead">Invitación especial para</p>
+      <!-- El nombre lo pone js/invitacion.js según el enlace de cada invitado.
+           En la invitación general (sin nombre) este bloque se oculta. -->
+      <div class="who-wrap" id="coverWho">
+        <span class="who-line"></span>
+        <p class="who" id="coverName">Madrina Valentina</p>
+        <span class="who-line"></span>
+      </div>
       <div class="script">Bautizo</div>
       <p class="small cover-date">Liam Andrés · 01 de noviembre</p>
       <button class="btn open" id="openBtn" type="button">
@@ -210,64 +215,19 @@
       <p class="place">La misa será en la <strong>Parroquia Santa Bernardita (Acapulco)</strong> a las 10:00 a.m.</p>
       <p class="place">La recepción será en la <strong>vereda La Esperanza</strong> (la parada de Pablo)</p>
 
-      <!-- Mapa: los nombres y enlaces de cada lugar están en js/invitacion.js -->
+      <!-- Mapa: los nombres, direcciones y enlaces de cada lugar están en js/invitacion.js -->
       <div class="map" id="map">
         <div class="map-tabs" role="tablist" aria-label="Lugares">
           <button class="map-tab" type="button" role="tab" id="tab-misa" data-place="misa" aria-selected="true">1 · Misa</button>
           <button class="map-tab" type="button" role="tab" id="tab-rec" data-place="rec" aria-selected="false">2 · Recepción</button>
         </div>
 
-        <svg class="map-svg" viewBox="0 0 340 230" role="img" aria-label="Mapa de la parroquia y de la recepción">
-          <defs>
-            <pattern id="mgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#e9e2d4" stroke-width=".6"/></pattern>
-            <linearGradient id="pinG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9a77d"/><stop offset="1" stop-color="#a96f47"/></linearGradient>
-          </defs>
-          <rect width="340" height="230" fill="#f6f1e7"/>
-          <rect width="340" height="230" fill="url(#mgrid)"/>
-          <!-- zonas verdes -->
-          <path d="M-5 150c40-14 70 8 110-4s60-40 100-30 60 34 140 20v100H-5z" fill="#dfe7df"/>
-          <path d="M210 -5c10 30 40 44 80 40s40 10 55 0V-5z" fill="#e3eae2"/>
-          <ellipse cx="62" cy="58" rx="46" ry="28" fill="#e3eae2"/>
-          <!-- quebrada -->
-          <path d="M-5 120c30 6 50-12 80-6s50 30 90 26 70-36 120-30 50 18 60 14" fill="none" stroke="#cfdde0" stroke-width="7" stroke-linecap="round"/>
-          <!-- vías -->
-          <g fill="none" stroke="#fffdf8" stroke-linecap="round">
-            <path d="M-5 92C60 86 110 70 170 74s120 30 175 22" stroke-width="10"/>
-            <path d="M118 -5c4 40 0 70 12 100s40 70 44 140" stroke-width="8"/>
-            <path d="M250 -5c-6 50-20 80-10 120s30 60 34 120" stroke-width="6"/>
-          </g>
-          <g fill="none" stroke="#e4d6bf" stroke-linecap="round">
-            <path d="M-5 92C60 86 110 70 170 74s120 30 175 22" stroke-width="1"/>
-            <path d="M118 -5c4 40 0 70 12 100s40 70 44 140" stroke-width="1"/>
-          </g>
-          <!-- ruta -->
-          <path id="route" d="M128 74c20 2 40 6 62 14s50 30 64 62" fill="none" stroke="#a96f47" stroke-width="2.2" stroke-dasharray="5 6" stroke-linecap="round"/>
-          <!-- arbolitos -->
-          <g fill="#9fb5a7"><circle cx="40" cy="170" r="6"/><circle cx="52" cy="176" r="5"/><circle cx="300" cy="190" r="6"/><circle cx="312" cy="184" r="5"/><circle cx="70" cy="50" r="5"/><circle cx="82" cy="60" r="6"/><circle cx="290" cy="30" r="5"/></g>
-          <!-- pin de la misa -->
-          <g class="pin" id="pin-misa" data-place="misa" transform="translate(128 74)" tabindex="0" role="button" aria-label="Ver la parroquia">
-            <ellipse cx="0" cy="2" rx="8" ry="3" fill="rgba(80,50,20,.18)"/>
-            <g class="pin-body">
-              <path d="M0 0c-10-12-14-18-14-25a14 14 0 0 1 28 0c0 7-4 13-14 25z" fill="url(#pinG)" stroke="#fff" stroke-width="1.5"/>
-              <path d="M0-33v12M-4-29h8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-            </g>
-          </g>
-          <!-- pin de la recepción -->
-          <g class="pin" id="pin-rec" data-place="rec" transform="translate(254 150)" tabindex="0" role="button" aria-label="Ver la recepción">
-            <ellipse cx="0" cy="2" rx="8" ry="3" fill="rgba(80,50,20,.18)"/>
-            <g class="pin-body">
-              <path d="M0 0c-10-12-14-18-14-25a14 14 0 0 1 28 0c0 7-4 13-14 25z" fill="#7f9a8b" stroke="#fff" stroke-width="1.5"/>
-              <path d="M-5-23l5-6 5 6M-3.5-24v5h7v-5" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
-            </g>
-          </g>
-          <!-- nombres sobre el mapa -->
-          <g font-family="Poppins, sans-serif" font-size="9.5" fill="#5f5b56">
-            <text x="128" y="96" text-anchor="middle">Parroquia Santa Bernardita</text>
-            <text x="254" y="170" text-anchor="middle">La Parada de Pablo</text>
-          </g>
-          <!-- norte -->
-          <g transform="translate(316 24)" fill="#a96f47" font-family="Poppins, sans-serif" font-size="9"><path d="M0-12l4 10h-8z"/><text y="9" text-anchor="middle">N</text></g>
-        </svg>
+        <!-- Mapa real de Google: se puede mover y acercar aquí mismo.
+             La dirección que muestra la pone js/invitacion.js. -->
+        <div class="map-frame">
+          <p class="map-loading">Cargando mapa…</p>
+          <iframe id="mapFrame" title="Mapa de Google" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
 
         <div class="map-info" id="mapInfo" aria-live="polite">
           <p class="map-title" id="mapTitle">Parroquia Santa Bernardita</p>
@@ -283,7 +243,7 @@
             </a>
           </div>
         </div>
-        <p class="map-note">Mapa de referencia. Toca un pin y abre Google Maps o Waze para ver la ruta exacta.</p>
+        <p class="map-note">Mueve y acerca el mapa con los dedos. Para que te guíe hasta el lugar, abre Google Maps o Waze.</p>
       </div>
 
       <span class="btn for" id="forTag">Para: Madrina Valentina</span>
@@ -301,7 +261,7 @@
     <div class="host-head">
       <p class="eyebrow">Solo para ti</p>
       <h2 id="hostTitle">Lista de invitados</h2>
-      <p class="host-help">Agrega a cada invitado y envíale su propio enlace. Al abrirlo, la invitación sale con su nombre y esta lista no aparece.</p>
+      <p class="host-help">Agrega a cada invitado y envíale su propio enlace: al abrirlo, la invitación sale con su nombre y esta lista no aparece. Para grupos o para quien no esté en la lista, usa la «Invitación general», que va sin nombre.</p>
     </div>
 
     <form class="host-add" id="addForm" autocomplete="off">

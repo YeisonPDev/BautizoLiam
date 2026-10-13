@@ -32,9 +32,17 @@ La fecha o la hora
 
 Los lugares del mapa o sus enlaces
     js/invitacion.js, en "DATOS QUE PUEDES CAMBIAR" -> lugares.
+    El mapa es de Google y necesita internet. Muestra lo que diga "buscar":
+    escribe el lugar igual que aparece en Google Maps.
 
 El mensaje de WhatsApp o los invitados iniciales
     js/invitacion.js, en "DATOS QUE PUEDES CAMBIAR".
+
+Los textos de la invitación general (sin nombre)
+    js/invitacion.js, en "DATOS QUE PUEDES CAMBIAR" -> general.
+
+Una animación (quitarla o hacerla más lenta)
+    css/estilos.css, al final, en "ANIMACIÓN DE ENTRADA".
 
 La foto
     Reemplaza img/foto-liam.webp por otra con el mismo nombre.
@@ -50,5 +58,7 @@ CÓMO SE ENVÍA A CADA INVITADO
    "Lista de invitados" (solo la ves tú).
 3. Agrega a cada persona y toca "Copiar enlace" o "Enviar por WhatsApp".
    Cada invitado abre la invitación con su nombre y no ve la lista.
+4. Para grupos, o para quien no esté en la lista, usa la primera fila:
+   "Invitación general". Su enlace abre la invitación sin ningún nombre.
 
 La lista se guarda en el navegador donde la escribiste, no en internet.
