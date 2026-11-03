@@ -24,7 +24,7 @@
 
     // Día y hora del bautizo: año-mes-día T hora:minutos:segundos.
     // El "-05:00" del final es la hora de Colombia; no lo cambies.
-    fecha: "2026-12-06T10:00:00-05:00",
+    fecha: "2026-11-22T10:00:00-05:00",
 
     // Invitados que aparecen en la lista la primera vez que se abre la página.
     invitadosIniciales: ["Madrina Valentina", "Padrino Jhonatan"],
